@@ -1,0 +1,39 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# GUIDING BLOG POST: www.oliviervs.be................................................
+
+# Identify when you want to execute the pipeline.
+# On every change? From a Pull Request? Scheduled?
+trigger:
+- development
+
+# Define which Azure DevOps Agent you would like to use to execute the pipeline
+pool:
+  vmImage: windows-latest
+
+steps:
+# Execute the Visual Studio Build Task
+- task: VSBuild@1
+  inputs:
+  # execute the task for all .sqlproj files in the repository
+    solution: '**\*.sqlproj'
+
+# Execute the Copy Files Task
+- task: CopyFiles@2
+  inputs:
+  # Configure where the files are, in this example we use the Default Build Directory
+    SourceFolder: '$(agent.builddirectory)'
+    # Define which content you want to copy
+    # If you do not specify, all files will be included in the Artifact later.
+    Contents: '**\*.dacpac'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+# Create an artifact from the files and publish the Artifact
+- task: PublishPipelineArtifact@1
+  inputs:
+  # Define the folder for which you want to create and publish an Artifact
+    targetPath: '$(build.artifactstagingdirectory)'
+    # Define the name of your Artifact, this will be used in the deployment pipeline afterwards
+    artifact: 'dev-drop-yaml'
