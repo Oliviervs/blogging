@@ -1,0 +1,66 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# GUIDING BLOG POST: www.oliviervs.be................................................
+
+trigger: 
+ branches: 
+  include:
+  - development
+
+:resources
+ pipelines:
+   - pipeline: 'CIDevelopmentYAML'
+     source: 'CI-Development-YAML'
+
+
+pool:
+  vmImage: windows-latest
+
+stages:
+ - stage: PublishToAzureSQL
+   jobs:
+   - job: PublishToAzureSQL
+     steps:
+     - checkout: none
+     - task: DownloadPipelineArtifact@2
+       inputs:
+        buildType: 'specific'
+        project: '***'
+        definition: '6'
+        specificBuildWithTriggering: true
+        buildVersionToDownload: 'latest'
+        artifactName: 'dev-drop-yaml'
+        itemPattern: '**\*.dacpac'
+        targetPath: '$(Pipeline.Workspace)/artifact'
+     - task: CmdLine@2
+       inputs:
+         script: |
+           echo "Structure of work folder of this pipeline:"
+           tree $(Pipeline.Workspace) /f
+           
+           echo "Build.ArtifactStagingDirectory:" 
+           
+           echo "$(Build.ArtifactStagingDirectory)"
+           
+           echo "Build.BinariesDirectory:" 
+           
+           echo "$(Build.BinariesDirectory)"
+           
+           echo "Build.SourcesDirectory:"
+           
+           echo "$(Build.SourcesDirectory)"
+     - task: SqlAzureDacpacDeployment@1 
+       inputs:
+          azureSubscription: '***'
+          AuthenticationType: 'server'
+          ServerName: $(VarDatabaseServer)
+          DatabaseName: $(VarDatabase)
+          SqlUsername: $(VarSqlUsername)
+          SqlPassword: $(VarSqlPassword)
+          deployType: 'DacpacTask'
+          DeploymentAction: 'Publish'
+          DacpacFile: '$(Pipeline.Workspace)\**\AdventureWorksLT.dacpac'
+          IpDetectionMethod: 'AutoDetect'
