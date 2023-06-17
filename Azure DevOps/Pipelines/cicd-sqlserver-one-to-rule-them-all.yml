@@ -1,0 +1,61 @@
+trigger:
+  branches:
+    include:
+    - master
+stages:
+- stage: __default
+  jobs:
+  - job: BuildProcess
+    displayName: Build Process
+    pool:
+      name: 'On-Premise Agent Pool'
+    steps:
+    - task: MSBuild@1
+      inputs:
+        solution: '**/*.sqlproj'
+        msbuildArchitecture: 'x64'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(agent.builddirectory)'
+        Contents: '**\*.dacpac'
+        TargetFolder: '$(build.artifactstagingdirectory)'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(build.artifactstagingdirectory)'
+        artifact: 'prd-drop-dacpac'
+  - job: WaitForApproval
+    displayName: Wait For Approval
+    pool:
+      name: Server
+    dependsOn:
+    - BuildProcess
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        notifyUsers: 'olivier@oliviervs.be'
+        instructions: |
+          Hi
+
+          New changes are waiting for your approval before they can be deployed.
+
+          Kind regards
+        onTimeout: reject
+  - job: DeployToTarget
+    displayName: Deploy Changes To Target
+    pool:
+      name: 'On-Premise Agent Pool'
+    dependsOn:
+    - WaitForApproval
+    steps:
+    - task: 6d15af64-176c-496d-b583-fd2ae21d4df4@1
+      condition: false
+      inputs:
+        repository: none
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        targetPath: '$(Pipeline.Workspace)'
+    - task: CmdLine@2
+      inputs:
+        script: '"C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe" /Action:Publish /SourceFile:"C:\agent\_work\2\prd-drop-dacpac\s\AdventureWorks\bin\Debug\AdventureWorksLT.dacpac" /TargetServerName:localhost /TargetDatabaseName:AdventureWorksLT2019 /TargetEncryptConnection:False'
+
