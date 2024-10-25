@@ -1,0 +1,34 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/BiteSizeData/BiteSizeData/bin/Debug
+/BiteSizeData/BiteSizeData/obj
+/BiteSizeData/BiteSizeDataDW/bin/Debug
+/BiteSizeData/BiteSizeDataDW/obj/Debug
+/BiteSizeData/BiteSizeDataDW/obj
+/BiteSizeData/BiteSizeDataStaging/bin/Debug
+/BiteSizeData/BiteSizeDataStaging/obj
+/CICD/BiteSizeData/.vs/BiteSizeData
+/CICD/BiteSizeData/BiteSizeData/Import Schema Logs
+/CICD/BiteSizeData/BiteSizeData/obj/Debug
+/CICD/BiteSizeData/BiteSizeData/BiteSizeData.dbmdl
+/CICD/BiteSizeData/BiteSizeData/BiteSizeData.jfm
+/CICD/BiteSizeData/BiteSizeData/BiteSizeData.sqlproj.user
+/CICD/BiteSizeData/BiteSizeDataDW/bin/Debug
+/CICD/BiteSizeData/BiteSizeDataDW/Import Schema Logs
+/CICD/BiteSizeData/BiteSizeDataDW/obj/Debug
+/CICD/BiteSizeData/BiteSizeDataDW/BiteSizeDataDW.dbmdl
+/CICD/BiteSizeData/BiteSizeDataDW/BiteSizeDataDW.jfm
+/CICD/BiteSizeData/BiteSizeDataDW/BiteSizeDataDW.sqlproj.user
+/CICD/BiteSizeData/BiteSizeDataDW_UnitTesting/bin/Debug
+/CICD/BiteSizeData/BiteSizeDataDW_UnitTesting/obj/Debug
+/CICD/BiteSizeData/BiteSizeDataDW_UnitTesting/BiteSizeDataDW_UnitTesting.dbmdl
+/CICD/BiteSizeData/BiteSizeDataDW_UnitTesting/BiteSizeDataDW_UnitTesting.jfm
+/CICD/BiteSizeData/BiteSizeDataDW_UnitTesting/BiteSizeDataDW_UnitTesting.sqlproj.user
+/CICD/BiteSizeData/BiteSizeDataStaging/bin
+/CICD/BiteSizeData/BiteSizeDataStaging/Import Schema Logs
+/CICD/BiteSizeData/BiteSizeDataStaging/obj
+/CICD/BiteSizeData/BiteSizeDataStaging/BiteSizeDataStaging.dbmdl
+/CICD/BiteSizeData/BiteSizeDataStaging/BiteSizeDataStaging.jfm
+/CICD/BiteSizeData/BiteSizeDataStaging/BiteSizeDataStaging.sqlproj.user
